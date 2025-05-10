@@ -39,7 +39,7 @@ class UniformCostSearch:
 
             # Return if the node contains a goal state
             # In this example, the goal test is run
-            # before adding a new node to the frontier
+            # after removing a new node from the frontier
             if node.state == grid.end:
                 return Solution(node, explored)
 
