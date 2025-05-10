@@ -1,5 +1,5 @@
 from ..models.grid import Grid
-from ..models.frontier import StackFrontier
+from ..models.frontier import PriorityQueueFrontier
 from ..models.solution import NoSolution, Solution
 from ..models.node import Node
 
@@ -19,9 +19,52 @@ class UniformCostSearch:
         node = Node("", grid.start, 0)
 
         # Initialize the explored dictionary to be empty
-        explored = {} 
-        
+        explored = {}
+
         # Add the node to the explored dictionary
         explored[node.state] = True
-        
+
+        # Initialize the frontier with the initial node
+        # In this example, the frontier is a priority queue
+        frontier = PriorityQueueFrontier()
+        frontier.add(node, node.cost)
+
+        while True:
+            #  Fail if the frontier is empty
+            if frontier.is_empty():
+                return NoSolution(explored)
+
+            # Remove a node from the frontier
+            node = frontier.pop()
+
+            # Return if the node contains a goal state
+            # In this example, the goal test is run
+            # before adding a new node to the frontier
+            if node.state == grid.end:
+                return Solution(node, explored)
+
+            # print(f'node.state: {node.state}')
+            # print(f'grid.end: {grid.end}')
+
+            # UCS
+            successors = grid.get_neighbours(node.state)
+            for neighbour in successors:
+                new_state = successors[neighbour]
+                cost = node.cost + grid.get_cost(new_state)
+
+                # print(f'node.cost: {node.cost}')
+                # print(f'get cost de node.state: {grid.get_cost(node.state)}')
+                # print(f'get cost de new_state: {grid.get_cost(new_state)}')
+                # print(f'Cost: {cost}')
+
+                if new_state not in explored or cost < explored[new_state]:
+                    new_node = Node("",
+                                    new_state,
+                                    cost,
+                                    parent=node,
+                                    action=neighbour)
+                    explored[new_state] = cost
+                    frontier.add(new_node, cost)
+
+
         return NoSolution(explored)
