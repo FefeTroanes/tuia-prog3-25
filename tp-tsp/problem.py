@@ -73,8 +73,8 @@ class OptProblem:
         raise NotImplementedError
 
     def random_reset(self) -> State:
-        """Retorna un estado generado al azar. 
-        
+        """Retorna un estado generado al azar.
+
         Este método será necesario para implementar el reinicion aleatorio.
         """
         raise NotImplementedError
@@ -161,7 +161,7 @@ class TSP(OptProblem):
             value -= self.G.get_edge_data(u, v)['weight']
         return value
 
-    def max_action(self, state: list[int]) -> tuple[tuple[int, int], float]:
+    def max_action(self, state: list[int], tabu = []) -> tuple[tuple[int, int], float]:
         """Determina la accion que genera el sucesor con mayor valor objetivo para un estado dado.
         
         Se encuentra optimizada y por razones de eficiencia no se generan los sucesores y 
@@ -183,6 +183,10 @@ class TSP(OptProblem):
         max_act = None
         max_val = float("-inf")
         for a in self.actions(state):
+
+            if a in tabu:
+                continue
+
             i, j = a
             v1 = state[i]+1  # origen de i
             v2 = state[i+1]+1  # destino de i
