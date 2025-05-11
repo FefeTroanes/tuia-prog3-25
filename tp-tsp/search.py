@@ -139,6 +139,11 @@ class HillClimbingReset(LocalSearch):
 
 class Tabu(LocalSearch):
     """Algoritmo de busqueda tabu."""
+    def __init__(self, max_iters, max_without_improve, max_tabu_size):
+        super().__init__()
+        self.max_iters = max_iters
+        self.max_without_improve = max_without_improve
+        self.max_tabu_size = max_tabu_size
 
     def solve(self, problem: OptProblem):
         """Resuelve un problema de optimizacion con busqueda Tabu.
@@ -157,14 +162,17 @@ class Tabu(LocalSearch):
         tabu_list = []
 
         # Cambiar una vez terminada
-        iters = 100
+        # iters = 100
         iters_without_improve = 0
 
-        # for iteracion in range(iters + 1):
+        # for iteracion in range(self.max_iters + 1):
         #     print(iteracion)
         while True:
             # Buscamos la acción que genera el sucesor con mayor valor objetivo
             act, succ_val = problem.max_action(actual, tabu_list)
+
+            print(f'act: {act}')
+            print(f'TAbu list: {tabu_list}')
 
             if act is None:
                 break
@@ -175,18 +183,22 @@ class Tabu(LocalSearch):
                 best_tour = succ
                 best_value = succ_val
                 iters_without_improve = 0
+                print('Mejora')
             else:
                 iters_without_improve += 1
+                print('No mejora')
 
             tabu_list.append(act)
             actual = succ
             value = succ_val
             self.niters += 1
 
-            if len(tabu_list) == 20:
+            if len(tabu_list) == self.max_tabu_size: # 20
                 tabu_list.pop(0)
+                print('ACORTAR LISTA TABU')
 
-            if iters_without_improve >= 1000:
+            if iters_without_improve >= self.max_without_improve: # 1000
+                print('MAXIMA CANTIDAD DE ITERACIONES SIN MEJORA')
                 break
 
         self.tour = best_tour

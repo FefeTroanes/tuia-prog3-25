@@ -29,12 +29,19 @@ def main() -> None:
     # Construir la instancia de TSP
     p = problem.TSP(G)
 
+    # inputs
+    print('HILL CLIMBING DE REINICIO ALEATORIO')
     reset_quantity = int(input('Ingrese la cantidad de veces que desea reiniciar aleatoriamente: '))
+
+    print('BUSQUEDA TABU')
+    max_iters = int(input('Ingrese la cantidad limite de iteraciones: '))
+    max_without_improve = int(input('Ingrese la cantidad limite de iteraciones sin mejora: '))
+    max_tabu_size = int(input('Ingrese el largo maximo de la lista tabu: '))
 
     # Construir las instancias de los algoritmos
     algos = {HILL_CLIMBING: search.HillClimbing(),
              HILL_CLIMBING_RANDOM_RESET: search.HillClimbingReset(reset_quantity),
-             TABU_SEARCH: search.Tabu()}
+             TABU_SEARCH: search.Tabu(max_iters, max_without_improve, max_tabu_size)}
 
     # Resolver el TSP con cada algoritmo
     for algo in algos.values():
