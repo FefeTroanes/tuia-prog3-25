@@ -19,7 +19,7 @@ from __future__ import annotations
 from time import time
 from problem import OptProblem
 
-
+# cantidad_reinicios = int(input('Ingree la cantidad de reinicios: '))
 class LocalSearch:
     """Clase que representa un algoritmo de busqueda local general."""
 
@@ -57,6 +57,8 @@ class HillClimbing(LocalSearch):
         # Arrancamos del estado inicial
         actual = problem.init
         value = problem.obj_val(problem.init)
+        print(f'Actual: {actual}')
+        print(f'Value: {value}')
 
         while True:
 
@@ -81,9 +83,58 @@ class HillClimbing(LocalSearch):
 
 class HillClimbingReset(LocalSearch):
     """Algoritmo de ascension de colinas con reinicio aleatorio."""
+    def __init__(self, reset_quantity):
+        super().__init__()
+        self.reset_quantity = reset_quantity
 
-    # COMPLETAR
+    def solve(self, problem: OptProblem):
+        """Resuelve un problema de optimizacion con ascension de colinas de reinicio aleatorio.
 
+        Argumentos:
+        ==========
+        problem: OptProblem
+            un problema de optimizacion
+        """
+        # Inicio del reloj y configuracion inicial
+        start = time()
+        # best_tour = None
+        # best_value = float('-inf')
+
+        # Arrancamos del estado inicial
+        best_tour = None
+        best_value = float('-inf')
+        # print(f'Actual: {actual}')
+        # print(f'Value: {value}')
+
+        for restart in range(self.reset_quantity +1):
+            print(f'Restart: {restart}')
+            if restart == 0:
+                actual = problem.init
+            else:
+                actual = problem.random_reset()
+            value = problem.obj_val(problem.init)
+            while True:
+                # Buscamos la acción que genera el sucesor con mayor valor objetivo
+                act, succ_val = problem.max_action(actual)
+
+                # Retornar si estamos en un maximo local:
+                # el valor objetivo del sucesor es menor o igual al del estado actual
+                if succ_val <= value:
+                    break
+
+                # Sino, nos movemos al sucesor
+                actual = problem.result(actual, act)
+                value = succ_val
+                self.niters += 1
+
+            if value > best_value:
+                best_tour = actual
+                best_value = value
+
+        self.tour = best_tour
+        self.value = best_value
+        end = time()
+        self.time = end-start
 
 class Tabu(LocalSearch):
     """Algoritmo de busqueda tabu."""

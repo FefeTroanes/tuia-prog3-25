@@ -29,9 +29,11 @@ def main() -> None:
     # Construir la instancia de TSP
     p = problem.TSP(G)
 
+    reset_quantity = int(input('Ingrese la cantidad de veces que desea reiniciar aleatoriamente: '))
+
     # Construir las instancias de los algoritmos
     algos = {HILL_CLIMBING: search.HillClimbing(),
-             HILL_CLIMBING_RANDOM_RESET: search.HillClimbingReset(),
+             HILL_CLIMBING_RANDOM_RESET: search.HillClimbingReset(reset_quantity),
              TABU_SEARCH: search.Tabu()}
 
     # Resolver el TSP con cada algoritmo
