@@ -103,8 +103,6 @@ class HillClimbingReset(LocalSearch):
         # Arrancamos del estado inicial
         best_tour = None
         best_value = float('-inf')
-        # print(f'Actual: {actual}')
-        # print(f'Value: {value}')
 
         for restart in range(self.reset_quantity +1):
             print(f'Restart: {restart}')
@@ -160,19 +158,12 @@ class Tabu(LocalSearch):
         value = problem.obj_val(actual)
         best_value = value
         tabu_list = []
-
-        # Cambiar una vez terminada
-        # iters = 100
         iters_without_improve = 0
 
         # for iteracion in range(self.max_iters + 1):
-        #     print(iteracion)
-        while True:
+        while True: # while dio mejor valor que for
             # Buscamos la acción que genera el sucesor con mayor valor objetivo
             act, succ_val = problem.max_action(actual, tabu_list)
-
-            print(f'act: {act}')
-            print(f'TAbu list: {tabu_list}')
 
             if act is None:
                 break
@@ -183,10 +174,8 @@ class Tabu(LocalSearch):
                 best_tour = succ
                 best_value = succ_val
                 iters_without_improve = 0
-                print('Mejora')
             else:
                 iters_without_improve += 1
-                print('No mejora')
 
             tabu_list.append(act)
             actual = succ
@@ -195,35 +184,11 @@ class Tabu(LocalSearch):
 
             if len(tabu_list) == self.max_tabu_size: # 20
                 tabu_list.pop(0)
-                print('ACORTAR LISTA TABU')
 
             if iters_without_improve >= self.max_without_improve: # 1000
-                print('MAXIMA CANTIDAD DE ITERACIONES SIN MEJORA')
                 break
 
         self.tour = best_tour
         self.value = best_value
         end = time()
         self.time = end-start
-
-
-# function BÚSQUEDA-TABÚ(problema) return estado
-#   actual ← problema.estado-inicial
-#   mejor ← actual
-#   tabu ← inicialmente vacía
-#   while no se cumpla el criterio de parada do
-#       accion ← MAX-ACCION(problema, actual, tabu)
-#       sucesor ← problema.resultado(actual, accion)
-
-
-#       if problema.f(mejor) < problema.f(sucesor) then mejor ← sucesor
-#       actualizar la lista tabú
-#       actual ← sucesor
-#   return mejor
-
-
-
-
-# Se puede agregar criterio de aspiracion PERO no es obligatorio
-# a la hora de elegir el sucesor, aplicamos el criterio de aspiracion
-# si no hay ninguno que verifique este criterio se sigue con la busqueda taboo

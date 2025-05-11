@@ -30,9 +30,6 @@ class DepthFirstSearch:
         # Initialize the explored dictionary to be empty
         explored = {}
 
-        # Add the node to the explored dictionary
-        # explored[node.state] = True # ESTO VA?
-
         while True:
             #  Fail if the frontier is empty
             if frontier.is_empty():
@@ -45,7 +42,7 @@ class DepthFirstSearch:
             if node.state in explored: continue
 
             # # Add the node to the explored dictionary
-            explored[node.state] = True # ESTO VA?
+            explored[node.state] = True
 
             # DFS
             successors = grid.get_neighbours(node.state)
@@ -58,9 +55,6 @@ class DepthFirstSearch:
                                     node.cost + grid.get_cost(new_state),
                                     parent=node, action=neighbour)
 
-                    # Mark the successor as reached
-                    # explored[new_state] = True
-
                     # Return if the node contains a goal state
                     # In this example, the goal test is run
                     # before adding a new node to the frontier
@@ -69,31 +63,3 @@ class DepthFirstSearch:
 
                     # Add the new node to the frontier
                     frontier.add(new_node)
-
-
-
-        return NoSolution(explored)
-
-
-
-# function GRAPH-(problema) return solución o fallo
-#     n₀ ← NODO(problema.estado-inicial, None, None, 0)
-#     if problema.test-objetivo(n₀.estado) then return solución(n₀)
-#     frontera ← Pila()     => ESTO CAMBIA
-#     frontera.apilar(n₀)   => ESTO CAMBIA
-#     expandidos ← {}       => ESTO CAMBIA (INICIA VACIO)
-#     do
-#         if frontera.vacía() then return fallo
-#         n ← frontera.desapilar()  => ESTO CAMBIA (DESAPILA)
-
-#         LO DE ABAJOES NUEVO
-#         if n.estado is in expandidos then continue # Control que evita expandir un estado ya expandido.
-#         expandidos.insertar(n.estado)
-
-
-#         forall a in problema.acciones(n.estado) do
-#             s’ ← problema.resultado(n.estado, a)
-#             if s’ is not in expandidos then
-#                 n’ ← Nodo(s’, n, a, n.costo + problema.costo-individual(n.estado,a))
-#                 if problema.test-objetivo(s’) then return solución(n’)
-#                 frontera.apilar(n’)

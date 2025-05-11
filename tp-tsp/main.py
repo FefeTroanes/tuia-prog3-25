@@ -29,7 +29,7 @@ def main() -> None:
     # Construir la instancia de TSP
     p = problem.TSP(G)
 
-    # inputs
+    # INPUTS
     print('HILL CLIMBING DE REINICIO ALEATORIO')
     reset_quantity = int(input('Ingrese la cantidad de veces que desea reiniciar aleatoriamente: '))
 
