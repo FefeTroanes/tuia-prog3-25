@@ -57,8 +57,6 @@ class HillClimbing(LocalSearch):
         # Arrancamos del estado inicial
         actual = problem.init
         value = problem.obj_val(problem.init)
-        print(f'Actual: {actual}')
-        print(f'Value: {value}')
 
         while True:
 
@@ -105,7 +103,6 @@ class HillClimbingReset(LocalSearch):
         best_value = float('-inf')
 
         for restart in range(self.reset_quantity +1):
-            print(f'Restart: {restart}')
             # Usamos el estado inicial o uno de reinicio aleatorio
             if restart == 0:
                 actual = problem.init
