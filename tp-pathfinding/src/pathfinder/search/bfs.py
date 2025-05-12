@@ -24,8 +24,6 @@ class BreadthFirstSearch:
         # Add the node to the explored dictionary
         explored[node.state] = True
 
-        # print(explored)
-
         # Return if the node contains a goal state
         if node.state == grid.end:
             return Solution(node, explored) #explored = reached?
@@ -65,8 +63,6 @@ class BreadthFirstSearch:
 
                     # Add the new node to the frontier
                     frontier.add(new_node)
-
-        return NoSolution(explored)
 
 
 

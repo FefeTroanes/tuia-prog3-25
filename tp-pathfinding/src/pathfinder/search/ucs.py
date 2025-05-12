@@ -43,19 +43,11 @@ class UniformCostSearch:
             if node.state == grid.end:
                 return Solution(node, explored)
 
-            # print(f'node.state: {node.state}')
-            # print(f'grid.end: {grid.end}')
-
             # UCS
             successors = grid.get_neighbours(node.state)
             for neighbour in successors:
                 new_state = successors[neighbour]
                 cost = node.cost + grid.get_cost(new_state)
-
-                # print(f'node.cost: {node.cost}')
-                # print(f'get cost de node.state: {grid.get_cost(node.state)}')
-                # print(f'get cost de new_state: {grid.get_cost(new_state)}')
-                # print(f'Cost: {cost}')
 
                 if new_state not in explored or cost < explored[new_state]:
                     new_node = Node("",
@@ -65,6 +57,3 @@ class UniformCostSearch:
                                     action=neighbour)
                     explored[new_state] = cost
                     frontier.add(new_node, cost)
-
-
-        return NoSolution(explored)
